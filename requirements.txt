@@ -4,3 +4,4 @@ werkzeug
 sqlalchemy
 langchain_google_genai
 langchain
+dotenv
