@@ -1,0 +1,6 @@
+flask
+flask_sqlalchemy
+werkzeug
+sqlalchemy
+langchain_google_genai
+langchain
