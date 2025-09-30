@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ivy - Environmental Sentinel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='index.css')}}">
+</head>
+
+<body>
+    <canvas id="space-canvas"></canvas>
+    <div class="nebula-overlay"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-icon">🌿</div>
+                <div class="brand-text">
+                    <h1>IVY</h1>
+                    <p>Sentinel System</p>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span class="status-text">System Online</span>
+            </div>
+        </div>
+
+        {% if data %}
+        <!-- Hero Grid -->
+        <div class="hero-grid">
+            <div class="main-panel">
+                <div class="time-stamp" id="timestamp">Live Reading</div>
+
+                <div class="metrics-row">
+                    <div class="metric-card temp">
+                        <div class="metric-header">
+                            <div class="metric-icon">🌡️</div>
+                            <div class="metric-trend"><i class="fas fa-arrow-up"></i> +2°</div>
+                        </div>
+                        <div class="metric-label">Temperature</div>
+                        <div class="metric-value-container">
+                            <div class="metric-value">{{ data.Temp }}</div>
+                            <div class="metric-unit">°C</div>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-bar-fill" style="width: {{ (data.Temp / 50 * 100)|int }}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card humid">
+                        <div class="metric-header">
+                            <div class="metric-icon">💧</div>
+                            <div class="metric-trend"><i class="fas fa-minus"></i> Stable</div>
+                        </div>
+                        <div class="metric-label">Humidity</div>
+                        <div class="metric-value-container">
+                            <div class="metric-value">{{ data.Humid }}</div>
+                            <div class="metric-unit">%</div>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-bar-fill" style="width: {{ data.Humid }}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card proxy">
+                        <div class="metric-header">
+                            <div class="metric-icon">📡</div>
+                            <div class="metric-trend"><i class="fas fa-arrow-down"></i> -3cm</div>
+                        </div>
+                        <div class="metric-label">Proximity</div>
+                        <div class="metric-value-container">
+                            <div class="metric-value">{{ data.Proxy }}</div>
+                            <div class="metric-unit">cm</div>
+                        </div>
+                        <div class="metric-bar">
+                            <div class="metric-bar-fill" style="width: {{ (data.Proxy / 100 * 100)|int }}%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-section">
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <div class="card-icon-box">🔬</div>
+                            <div class="card-title-group">
+                                <h3>Environmental Analysis</h3>
+                                <div class="card-subtitle">AI-Powered Assessment</div>
+                            </div>
+                        </div>
+                        <div class="card-content">{{ data.Resp }}</div>
+                    </div>
+
+                    <div class="analysis-card">
+                        <div class="card-header">
+                            <div class="card-icon-box">💡</div>
+                            <div class="card-title-group">
+                                <h3>Recommendation</h3>
+                                <div class="card-subtitle">Actionable Insights</div>
+                            </div>
+                        </div>
+                        <div class="card-content">{{ data.Sugg }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confidence Panel -->
+            <div class="confidence-panel">
+                <div class="gauge-container">
+                    <svg class="gauge-bg" viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00d9a3;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(255,255,255,0.05)"
+                            stroke-width="10" />
+                        <circle id="gauge-circle" cx="100" cy="100" r="85" fill="none" stroke="url(#gaugeGradient)"
+                            stroke-width="10" stroke-linecap="round" stroke-dasharray="534" stroke-dashoffset="534"
+                            transform="rotate(-90 100 100)" />
+                    </svg>
+                    <div class="gauge-value">
+                        <div class="gauge-percentage">{{ data.Confid }}%</div>
+                        <div class="gauge-label">Confidence</div>
+                    </div>
+                </div>
+                <div class="confidence-badge">
+                    <i class="fas fa-check-circle"></i>
+                    <span>High Accuracy</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <div class="info-visual">🌍</div>
+            <div class="info-content">
+                <h2 class="info-title">Intelligent Environmental Sentinel</h2>
+                <p class="info-description">
+                    Advanced AI-powered monitoring system providing real-time environmental insights
+                    through continuous analysis of temperature, humidity, and proximity data. Ensuring
+                    optimal conditions through predictive intelligence and adaptive learning algorithms.
+                </p>
+            </div>
+        </div>
+
+        <!-- Historical Readings -->
+        <div class="history-section">
+            <div class="section-header">
+                <h2 class="section-title">Historical Readings</h2>
+                <p class="section-subtitle">Data Archive</p>
+            </div>
+
+            <div class="readings-grid">
+                {% for item in Data[:5] %}
+                <div class="reading-card">
+                    <div class="reading-header">
+                        <span class="reading-id">#{{ '%04d'|format(item.id) }}</span>
+                        <button class="expand-toggle" onclick="toggleReading(this)">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="reading-metrics-mini">
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-thermometer-half"></i> Temp</div>
+                            <div class="mini-metric-value">{{ item.Temp }}°C</div>
+                        </div>
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-tint"></i> Humid</div>
+                            <div class="mini-metric-value">{{ item.Humid }}%</div>
+                        </div>
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-broadcast-tower"></i> Proxy</div>
+                            <div class="mini-metric-value">{{ item.Proxy }}cm</div>
+                        </div>
+                    </div>
+
+                    <div class="reading-details">
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-chart-line"></i> Analysis
+                            </div>
+                            <div class="detail-value">{{ item.Resp }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-lightbulb"></i> Recommendation
+                            </div>
+                            <div class="detail-value">{{ item.Sugg }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-certificate"></i> Confidence Score
+                            </div>
+                            <div class="detail-value">{{ item.Confid }}%</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if Data|length > 5 %}
+            <div class="load-more-section">
+                <button class="load-more-btn" onclick="loadMore()">
+                    <span>Load More Readings</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <div class="readings-grid hidden" id="additional-readings">
+                {% for item in Data[5:10] %}
+                <div class="reading-card">
+                    <div class="reading-header">
+                        <span class="reading-id">#{{ '%04d'|format(item.id) }}</span>
+                        <button class="expand-toggle" onclick="toggleReading(this)">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="reading-metrics-mini">
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-thermometer-half"></i> Temp</div>
+                            <div class="mini-metric-value">{{ item.Temp }}°C</div>
+                        </div>
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-tint"></i> Humid</div>
+                            <div class="mini-metric-value">{{ item.Humid }}%</div>
+                        </div>
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-broadcast-tower"></i> Proxy</div>
+                            <div class="mini-metric-value">{{ item.Proxy }}cm</div>
+                        </div>
+                    </div>
+
+                    <div class="reading-details">
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-chart-line"></i> Analysis
+                            </div>
+                            <div class="detail-value">{{ item.Resp }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-lightbulb"></i> Recommendation
+                            </div>
+                            <div class="detail-value">{{ item.Sugg }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-certificate"></i> Confidence Score
+                            </div>
+                            <div class="detail-value">{{ item.Confid }}%</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if Data|length > 10 %}
+            <div class="load-more-section hidden" id="load-more-2">
+                <button class="load-more-btn" onclick="loadMoreFinal()">
+                    <span>Load More Readings</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <div class="readings-grid hidden" id="final-readings">
+                {% for item in Data[10:15] %}
+                <div class="reading-card">
+                    <div class="reading-header">
+                        <span class="reading-id">#{{ '%04d'|format(item.id) }}</span>
+                        <button class="expand-toggle" onclick="toggleReading(this)">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+
+                    <div class="reading-metrics-mini">
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-thermometer-half"></i> Temp</div>
+                            <div class="mini-metric-value">{{ item.Temp }}°C</div>
+                        </div>
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-tint"></i> Humid</div>
+                            <div class="mini-metric-value">{{ item.Humid }}%</div>
+                        </div>
+                        <div class="mini-metric">
+                            <div class="mini-metric-label"><i class="fas fa-broadcast-tower"></i> Proxy</div>
+                            <div class="mini-metric-value">{{ item.Proxy }}cm</div>
+                        </div>
+                    </div>
+
+                    <div class="reading-details">
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-chart-line"></i> Analysis
+                            </div>
+                            <div class="detail-value">{{ item.Resp }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-lightbulb"></i> Recommendation
+                            </div>
+                            <div class="detail-value">{{ item.Sugg }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">
+                                <i class="fas fa-certificate"></i> Confidence Score
+                            </div>
+                            <div class="detail-value">{{ item.Confid }}%</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-text">
+                Built with <i class="fas fa-heart"></i> by AI
+            </div>
+            <div class="social-links">
+                <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com" target="_blank" class="social-link" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank" class="social-link" title="X (Twitter)">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static',filename='index.js')}}"></script>
+    <script> 
+        // Stellar Background Animation
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        const shootingStars = [];
+        const numStars = 300;
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.speedY = (Math.random() - 0.5) * 0.3;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity += this.twinkleSpeed;
+
+                if (this.opacity > 1 || this.opacity < 0.3) {
+                    this.twinkleSpeed *= -1;
+                }
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height * 0.5;
+                this.length = Math.random() * 80 + 40;
+                this.speed = Math.random() * 10 + 8;
+                this.opacity = 1;
+                this.angle = Math.PI / 4;
+            }
+
+            update() {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                this.opacity -= 0.015;
+
+                if (this.opacity <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                const gradient = ctx.createLinearGradient(
+                    this.x, this.y,
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                gradient.addColorStop(0, `rgba(0, 255, 136, ${this.opacity})`);
+                gradient.addColorStop(1, `rgba(0, 255, 136, 0)`);
+                
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(
+                    this.x - Math.cos(this.angle) * this.length,
+                    this.y - Math.sin(this.angle) * this.length
+                );
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        // Initialize stars
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+
+        // Initialize shooting stars
+        for (let i = 0; i < 3; i++) {
+            shootingStars.push(new ShootingStar());
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            shootingStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Animate confidence gauge on load
+        window.addEventListener('load', () => {
+            {% if data %}
+            const circle = document.getElementById('gauge-circle');
+            const confidence = {{ data.Confid }};
+            const circumference = 534;
+            const offset = circumference - (confidence / 100) * circumference;
+            
+            setTimeout(() => {
+                circle.style.transition = 'stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1)';
+                circle.style.strokeDashoffset = offset;
+            }, 500);
+            {% endif %}
+        });
+
+        // Toggle reading details
+        function toggleReading(btn) {
+            const card = btn.closest('.reading-card');
+            const details = card.querySelector('.reading-details');
+            const icon = btn.querySelector('i');
+            
+            details.classList.toggle('expanded');
+            
+            if (details.classList.contains('expanded')) {
+                btn.style.transform = 'rotate(180deg)';
+            } else {
+                btn.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Load more readings
+        function loadMore() {
+            const additionalReadings = document.getElementById('additional-readings');
+            const loadMoreBtn = document.querySelector('.load-more-btn');
+            const loadMore2 = document.getElementById('load-more-2');
+            
+            additionalReadings.classList.remove('hidden');
+            loadMoreBtn.parentElement.classList.add('hidden');
+            
+            if (loadMore2) {
+                loadMore2.classList.remove('hidden');
+            }
+        }
+
+        function loadMoreFinal() {
+            const finalReadings = document.getElementById('final-readings');
+            const loadMore2 = document.getElementById('load-more-2');
+            
+            finalReadings.classList.remove('hidden');
+            loadMore2.classList.add('hidden');
+        }
+
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const timestamp = document.getElementById('timestamp');
+            if (timestamp) {
+                timestamp.textContent = `Live Reading - ${timeString}`;
+            }
+        }
+
+        updateTimestamp();
+        setInterval(updateTimestamp, 1000);
+    </script>
+</body>
+
+</html>
