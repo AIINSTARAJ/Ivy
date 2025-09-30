@@ -21,6 +21,10 @@ def index():
 
     return render_template('index.html', data = data, Data = Items)
 
+@app.route('/favicon.ico')
+def icon():
+    return send_from_directory(directory='UI',path="Img/Ivy.ico")
+
 @app.route('/data',methods = ['GET','POST'])
 def data():
     data = request.get_json()

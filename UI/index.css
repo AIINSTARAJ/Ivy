@@ -120,7 +120,7 @@ body {
     }
 
     50% {
-        transform: translateY(-8px);
+        transform: translateY(-7px);
     }
 }
 
@@ -143,6 +143,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-family: 'Times New Roman', serif;
 }
 
 .brand-text p {
@@ -492,7 +493,7 @@ body {
 
 /* Info Banner */
 .info-banner {
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(0, 217, 163, 0.05));
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.02), rgba(0, 217, 163, 0.02));
     border: 1px solid rgba(0, 255, 136, 0.15);
     border-radius: 32px;
     padding: 3rem;
@@ -513,7 +514,7 @@ body {
     right: -50%;
     width: 100%;
     height: 200%;
-    background: radial-gradient(circle, rgba(0, 255, 136, 0.08), transparent 70%);
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.03), transparent 70%);
     animation: rotate 40s linear infinite;
 }
 
@@ -550,6 +551,7 @@ body {
 .info-title {
     font-size: 2.2rem;
     font-weight: 700;
+    font-family: 'Times New Roman',serif;
     margin-bottom: 0.8rem;
     background: linear-gradient(135deg, #ffffff, var(--accent-green));
     -webkit-background-clip: text;
@@ -819,7 +821,7 @@ body {
 .social-link {
     width: 50px;
     height: 50px;
-    background: var(--glass-medium);
+    background: rgba(255, 255, 255, 0.065);
     border: 1px solid var(--border-subtle);
     border-radius: 50%;
     display: flex;

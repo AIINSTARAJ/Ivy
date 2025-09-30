@@ -47,7 +47,7 @@
                             <div class="metric-unit">°C</div>
                         </div>
                         <div class="metric-bar">
-                            <div class="metric-bar-fill" style="width: {{ (data.Temp / 50 * 100)|int }}%"></div>
+                            <div class="metric-bar-fill" style="width: {{ (data.Temp / 50 * 100)|int }}%"></div> 
                         </div>
                     </div>
 
@@ -160,7 +160,7 @@
                 {% for item in Data[:5] %}
                 <div class="reading-card">
                     <div class="reading-header">
-                        <span class="reading-id">#{{ '%04d'|format(item.id) }}</span>
+                        <span class="reading-id">{{ '%02d'|format(item.id) }}</span>
                         <button class="expand-toggle" onclick="toggleReading(this)">
                             <i class="fas fa-chevron-down"></i>
                         </button>
@@ -217,7 +217,7 @@
                 {% for item in Data[5:10] %}
                 <div class="reading-card">
                     <div class="reading-header">
-                        <span class="reading-id">#{{ '%04d'|format(item.id) }}</span>
+                        <span class="reading-id">{{ '%02d'|format(item.id) }}</span>
                         <button class="expand-toggle" onclick="toggleReading(this)">
                             <i class="fas fa-chevron-down"></i>
                         </button>
@@ -274,7 +274,7 @@
                 {% for item in Data[10:15] %}
                 <div class="reading-card">
                     <div class="reading-header">
-                        <span class="reading-id">#{{ '%04d'|format(item.id) }}</span>
+                        <span class="reading-id">{{ '%02d'|format(item.id) }}</span>
                         <button class="expand-toggle" onclick="toggleReading(this)">
                             <i class="fas fa-chevron-down"></i>
                         </button>
@@ -325,16 +325,16 @@
         <!-- Footer -->
         <div class="footer">
             <div class="footer-text">
-                Built with <i class="fas fa-heart"></i> by AI
+                Built with <i class="fas fa-heart"></i> by A.I Instaraj
             </div>
             <div class="social-links">
                 <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
-                <a href="https://github.com" target="_blank" class="social-link" title="GitHub">
+                <a href="https://github.com/AIINSTARAJ" target="_blank" class="social-link" title="GitHub">
                     <i class="fab fa-github"></i>
                 </a>
-                <a href="https://twitter.com" target="_blank" class="social-link" title="X (Twitter)">
+                <a href="https://twitter.com/AI_Instaraj" target="_blank" class="social-link" title="X (Twitter)">
                     <i class="fab fa-twitter"></i>
                 </a>
             </div>
